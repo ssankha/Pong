@@ -10,6 +10,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
     private Ball ball;
     private Score score;
     private MainMenu mainMenu;
+    private Fade fade;
 
 
     public static String status;
@@ -24,6 +25,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         ai = new AIPaddle(this.game, ball);
         score = new Score(game);
         mainMenu = new MainMenu(game);
+        fade = new Fade(game);
 
         Timer timer = new Timer(10, this);
         timer.start();
@@ -49,6 +51,10 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
 
 
         super.paintComponent(g);
+
+        if(status.equals("FADE")) {
+            fade.paint(g);
+        }
 
         if(status.equals("MAIN MENU")) {
             mainMenu.paint(g);
