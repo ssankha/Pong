@@ -73,8 +73,6 @@ public class Ball {
 
         if (hp.getBounds().intersects(getBounds()) || ai.getBounds().intersects(getBounds())) {
 
-            playSound();
-
             if (hp.getX() > x) {
                 x -= 50;
             }
@@ -108,13 +106,6 @@ public class Ball {
     public void paint(Graphics g) {
         g.setColor(Color.white);
         g.fillOval(x, y, BALL_DIAMETER, BALL_DIAMETER);
-
-//        try {
-//            BufferedImage image = ImageIO.read(new FileInputStream("floyd_money.png"));
-//            g.drawImage(image, x, y, BALL_DIAMETER, BALL_DIAMETER, null);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public Rectangle getBounds() {
@@ -123,11 +114,5 @@ public class Ball {
 
     public int getY() {
         return y;
-    }
-
-    public void playSound() {
-
-
-
     }
 }
