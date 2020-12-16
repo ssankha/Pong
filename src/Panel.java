@@ -12,8 +12,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
     private AIPaddle ai;
     private Ball ball;
     private Score score;
-
-    public static long startTime = System.currentTimeMillis();
+    
 
     public String status;
 
@@ -54,14 +53,6 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         update();
         repaint();
-
-        double timeMillis = System.currentTimeMillis() - startTime;
-
-        if(timeMillis >= 526000) {
-            System.out.printf("8:46");
-            System.exit(0);
-
-        }
     }
 
 
