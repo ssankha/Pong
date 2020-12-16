@@ -1,11 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
-public class Panel extends JPanel implements KeyListener, ActionListener {
+public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
     private Game game;
     private HumanPaddle hp;
@@ -15,7 +12,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
     private MainMenu mainMenu;
 
 
-    public String status;
+    public static String status;
 
 
     public Panel(Game game) {
@@ -31,9 +28,11 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
         Timer timer = new Timer(10, this);
         timer.start();
         addKeyListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
         setFocusable(true);
 
-        status = "MENU";
+        status = "MAIN MENU";
     }
 
     public void update() {
@@ -51,7 +50,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
 
         super.paintComponent(g);
 
-        if(status.equals("MENU")) {
+        if(status.equals("MAIN MENU")) {
             mainMenu.paint(g);
         }
         else if(status.equals("GAME")) {
@@ -91,6 +90,32 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
         return ball;
     }
 
+
+    @Override
+    public void mouseMoved(MouseEvent mouseEvent) {
+        mainMenu.mouseMoved(mouseEvent);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+        mainMenu.mousePressed(mouseEvent);
+    }
+
     @Override
     public void keyTyped(KeyEvent keyEvent) { }
+
+    @Override
+    public void mouseDragged(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) { }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) { }
 }
