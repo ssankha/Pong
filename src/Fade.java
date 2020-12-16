@@ -23,7 +23,6 @@ public class Fade {
         //do the drawing here
         g.setColor(Color.black);
         g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
-        System.out.println(alpha);
 
 
         //increase the opacity and repaint
@@ -40,7 +39,6 @@ public class Fade {
             else {
                 alpha = 0.0f;
                 Panel.status = "GAME";
-                System.out.println("here");
             }
 
         }
