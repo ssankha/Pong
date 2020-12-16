@@ -32,7 +32,7 @@ public class MainMenu {
         g2.setStroke(new BasicStroke(10));
 
         g2.drawString("< PONG >", titleX, titleY);
-        
+
 
         if(!playHover) {
             g.setFont(new Font("Arial",Font.BOLD,50));
@@ -78,7 +78,7 @@ public class MainMenu {
         Rectangle quitRect = new Rectangle(quitX, quitY - 58, 219, 58);
 
         if(playRect.contains(e.getX(), e.getY())) {
-            Panel.status = "GAME";
+            Panel.status = "FADE";
         }
 
         if(quitRect.contains(e.getX(), e.getY())) {
