@@ -41,14 +41,7 @@ public class HumanPaddle {
 
     public void paint(Graphics g) {
         g.setColor(Color.white);
-        g.fillRect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT);
-
-//        try {
-//            BufferedImage image = ImageIO.read(new FileInputStream("police_officer.png"));
-//            g.drawImage(image, x, y, PADDLE_WIDTH, PADDLE_HEIGHT, null);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        g.fillRoundRect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT, 10, 10);
     }
 
     public Rectangle getBounds() {
