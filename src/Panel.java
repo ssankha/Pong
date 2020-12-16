@@ -12,7 +12,8 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
     private AIPaddle ai;
     private Ball ball;
     private Score score;
-    
+    private MainMenu mainMenu;
+
 
     public String status;
 
@@ -25,6 +26,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
         hp = new HumanPaddle(this.game);
         ai = new AIPaddle(this.game, ball);
         score = new Score(game);
+        mainMenu = new MainMenu(game);
 
         Timer timer = new Timer(10, this);
         timer.start();
@@ -35,18 +37,29 @@ public class Panel extends JPanel implements KeyListener, ActionListener {
     }
 
     public void update() {
-        ai.update();
-        hp.update();
-        ball.update();
+
+        if(status.equals("GAME")) {
+            ai.update();
+            hp.update();
+            ball.update();
+        }
     }
 
     @Override
     public void paintComponent(Graphics g) {
+
+
         super.paintComponent(g);
-        score.paint(g);
-        ball.paint(g);
-        hp.paint(g);
-        ai.paint(g);
+
+        if(status.equals("MENU")) {
+            mainMenu.paint(g);
+        }
+        else if(status.equals("GAME")) {
+            score.paint(g);
+            ball.paint(g);
+            hp.paint(g);
+            ai.paint(g);
+        }
     }
 
     @Override
