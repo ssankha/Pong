@@ -53,7 +53,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
 
     public void update() {
 
-        if(status.equals("GAME") && AIPaddle.score < 6 && HumanPaddle.score < 6 ) {
+        if(status.equals("PONG") && AIPaddle.score < 6 && HumanPaddle.score < 6 ) {
             ai.update();
             hp.update();
             ball.update();
@@ -73,7 +73,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         if(status.equals("MAIN MENU")) {
             mainMenu.paint(g);
         }
-        else if(status.equals("GAME")) {
+        else if(status.equals("PONG")) {
             score.paint(g);
 
             ball.paint(g);
