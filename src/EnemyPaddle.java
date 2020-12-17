@@ -22,29 +22,24 @@ public class EnemyPaddle {
     }
 
     public void update() {
-        if(vX == 0) {
+        if (vX == 0) {
 
-            if(y >= 0 && y < MAX_Y) {
+            if (y >= 0 && y <= MAX_Y) {
                 y += vY;
-            }
-            else if(y > MAX_Y) {
+            } else if (y > MAX_Y) {
                 y = MAX_Y;
                 vY *= -1;
-            }
-            else if(y < 0) {
+            } else if (y < 0) {
                 y = 0;
                 vY *= -1;
             }
-        }
-        else {
-            if(x >= 0 && x <= MAX_X) {
+        } else {
+            if (x >= 0 && x <= MAX_X) {
                 x += vX;
-            }
-            else if(x > MAX_X) {
+            } else if (x > MAX_X) {
                 x = MAX_X;
                 vX *= -1;
-            }
-            else if(x < 0) {
+            } else if (x < 0) {
                 x = 0;
                 vX *= -1;
             }
@@ -56,10 +51,26 @@ public class EnemyPaddle {
         g.fillRoundRect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT, 10, 10);
     }
 
+    public int getX() {
+        return x;
+    }
 
+    public int getY() {
+        return y;
+    }
 
+    public void setX(int x) {
+        this.x = x;
+    }
 
+    public void setY(int y) {
+        this.y = y;
+    }
 
-
-
+    public void setVY(int vY) {
+        this.vY = vY;
+    }
 }
+
+
+
