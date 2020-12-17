@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLOutput;
 
 public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
@@ -16,14 +17,25 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
     private MainMenu mainMenu;
     private Fade fade;
 
+
     // create Pong messages
     private Message welcome;
     private Message instructions;
     private Message goodLuck;
 
+    // create real game objects
+    private EnemyPaddle ep1;
+    private EnemyPaddle ep2;
+    private boolean switchGame = false; // used to switch the status from "PONG" to "GAME"
+    private boolean locationSet = false; // used at first to let the thread know if it needs to update the enemyPaddles' locations
+    private boolean startGame = false;
+
     // create real game messages
-
-
+    private Message gameOverMessage;
+    private Message ballMessage;
+    private Message arrowMessage;
+    private Message mouseMessage;
+    private Message prepareMessage;
 
 
     public Panel(Game game) {
@@ -41,6 +53,16 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         instructions = new Message(this.game, Game.WIDTH / 2 - (406/2), "A player wins when their score reaches 6!", 300);
         goodLuck = new Message(this.game, Game.WIDTH / 2 - (106/2), "Good luck!", 200);
 
+        ep1 = new EnemyPaddle(this.game, hp.getX(), hp.getY(), 0, 3);
+        ep2 = new EnemyPaddle(this.game, ai.getX(), ai.getY(), 0, 3);
+
+        gameOverMessage = new Message(this.game, Game.WIDTH / 2 - (205/2), "The game has ended.", 300);
+        ballMessage = new Message(this.game, Game.WIDTH / 2 - (207/2), "Now, you are the ball.", 300);
+        arrowMessage = new Message(this.game, Game.WIDTH / 2 - (272/2), "Use the arrow keys to move.", 300);
+        mouseMessage = new Message(this.game, Game.WIDTH / 2 - (234/2), "Use the mouse to shoot.", 300);
+        prepareMessage = new Message(this.game, Game.WIDTH / 2 - (175/2), "Prepare yourself...", 300);
+
+
         Timer timer = new Timer(10, this);
         timer.start();
         addKeyListener(this);
@@ -52,18 +74,31 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
     }
 
     public void update() {
+        if(!switchGame) {
+            if (status.equals("PONG") && AIPaddle.score < 6 && HumanPaddle.score < 6) {
+                ai.update();
+                hp.update();
+                ball.update();
 
-        if(status.equals("PONG") && AIPaddle.score < 6 && HumanPaddle.score < 6 ) {
-            ai.update();
-            hp.update();
-            ball.update();
+            } else if(AIPaddle.score == 6 || HumanPaddle.score == 6){ // TODO SWITCH TO GAME
+                switchGame = true;
+                status = "GAME";
+            }
+        }
+        else {
+            if(!locationSet) {
+                ep1.setY(hp.getY());
+                ep2.setY(ai.getY());
+                locationSet = true;
+            }
+
+            ep1.update();
+            ep2.update();
         }
     }
 
     @Override
     public void paintComponent(Graphics g) {
-
-
         super.paintComponent(g);
 
         if(status.equals("FADE")) {
@@ -89,6 +124,28 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
             else if(!goodLuck.getStopMessage()){
                 goodLuck.paint(g);
             }
+        }
+        else if(status.equals("GAME")) {
+            score.paint(g);
+            ep1.paint(g);
+            ep2.paint(g);
+
+            if(!gameOverMessage.getStopMessage()) {
+                gameOverMessage.paint(g);
+            }
+            else if(!ballMessage.getStopMessage()) {
+                ballMessage.paint(g);
+            }
+            else if(!arrowMessage.getStopMessage()) {
+                arrowMessage.paint(g);
+            }
+            else if(!mouseMessage.getStopMessage()) {
+                mouseMessage.paint(g);
+            }
+            else if(!prepareMessage.getStopMessage()) {
+                prepareMessage.paint(g);
+            }
+
         }
     }
 
