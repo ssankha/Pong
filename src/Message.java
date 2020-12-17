@@ -11,6 +11,7 @@ public class Message {
 
     private int numTimesRan = 0;
     private boolean stopMessage = false;
+    private boolean isDisplayed = true;
 
     public Message(Game game, int x, String message, int numTimesToRun) {
         this.game = game;
@@ -35,8 +36,8 @@ public class Message {
         g2.drawRoundRect(x-offset, Game.WIDTH/8 - 2*offset, g2.getFontMetrics().stringWidth(message) + 2*offset, offset*2, 10, 10);
         g2.drawString(message, x, y);
 
-        System.out.println(g2.getFontMetrics().stringWidth("Good luck!"));
-       numTimesRan++;
+        //System.out.println(g2.getFontMetrics().stringWidth("Use the mouse to shoot."));
+        numTimesRan++;
 
        if(numTimesRan >= numTimesToRun) {
            stopMessage = true;
