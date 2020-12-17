@@ -38,7 +38,7 @@ public class Fade {
             }
             else {
                 alpha = 0.0f;
-                Panel.status = "GAME";
+                Panel.status = "PONG";
             }
 
         }
