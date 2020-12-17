@@ -4,6 +4,10 @@ import java.awt.event.*;
 
 public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
+
+    public static String status; // controls what's on the screen
+
+    // create Pong objects
     private Game game;
     private HumanPaddle hp;
     private AIPaddle ai;
@@ -12,8 +16,14 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
     private MainMenu mainMenu;
     private Fade fade;
 
+    // create Pong messages
+    private Message welcome;
+    private Message instructions;
+    private Message goodLuck;
 
-    public static String status;
+    // create real game messages
+
+
 
 
     public Panel(Game game) {
@@ -23,9 +33,13 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         ball = new Ball(this.game);
         hp = new HumanPaddle(this.game);
         ai = new AIPaddle(this.game, ball);
-        score = new Score(game);
-        mainMenu = new MainMenu(game);
-        fade = new Fade(game);
+        score = new Score(this.game);
+        mainMenu = new MainMenu(this.game);
+        fade = new Fade(this.game);
+
+        welcome = new Message(this.game, Game.WIDTH / 2 - (176/2), "Welcome to Pong!", 300);
+        instructions = new Message(this.game, Game.WIDTH / 2 - (406/2), "A player wins when their score reaches 6!", 300);
+        goodLuck = new Message(this.game, Game.WIDTH / 2 - (106/2), "Good luck!", 200);
 
         Timer timer = new Timer(10, this);
         timer.start();
@@ -39,7 +53,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
 
     public void update() {
 
-        if(status.equals("GAME")) {
+        if(status.equals("GAME") && AIPaddle.score < 6 && HumanPaddle.score < 6 ) {
             ai.update();
             hp.update();
             ball.update();
@@ -61,9 +75,20 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         }
         else if(status.equals("GAME")) {
             score.paint(g);
+
             ball.paint(g);
             hp.paint(g);
             ai.paint(g);
+
+            if(!welcome.getStopMessage()) {
+                welcome.paint(g);
+            }
+            else if(!instructions.getStopMessage()) {
+                instructions.paint(g);
+            }
+            else if(!goodLuck.getStopMessage()){
+                goodLuck.paint(g);
+            }
         }
     }
 
