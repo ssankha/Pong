@@ -1,0 +1,53 @@
+import java.awt.*;
+
+public class Bullet {
+
+    public static final int BULLET_WIDTH = 40;
+    public static final int BULLET_HEIGHT = 10;
+
+    private Game game;
+    private int x;
+    private int y;
+    private int vX;
+    private int vY;
+    private int id; // 1 = player, 2 = paddle
+    private boolean isDead;
+
+    public Bullet(Game game, int x, int y, int vX, int vY, int id) {
+        this.game = game;
+        this.x = x;
+        this.y = y;
+        this.vX = vX;
+        this.vY = vY;
+        this.id = id;
+    }
+
+    public void update() {
+        x += vX;
+        y += vY;
+
+        checkCollision();
+    }
+
+    public void checkCollision() {
+        if(id == 1) {
+            // TODO
+        }
+    }
+
+    public void paint(Graphics g) {
+        if(id == 1) {
+            g.setColor(Color.green);
+        }
+        else {
+            g.setColor(Color.red);
+        }
+
+        g.fillRoundRect(x, y, BULLET_WIDTH, BULLET_HEIGHT, 10, 10);
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+    }
+}
+
