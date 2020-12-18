@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Bullet {
+public class Bullet implements Entity {
 
     public static final int BULLET_WIDTH = 40;
     public static final int BULLET_HEIGHT = 10;
@@ -8,13 +8,14 @@ public class Bullet {
     private Game game;
     private int x;
     private int y;
-    private int vX;
-    private int vY;
+    private double vX;
+    private double vY;
     private int id; // 1 = player, 2 = paddle
-    private boolean isDead;
+    private Handler handler;
 
-    public Bullet(Game game, int x, int y, int vX, int vY, int id) {
+    public Bullet(Game game, Handler handler, int x, int y, double vX, double vY, int id) {
         this.game = game;
+        this.handler = handler;
         this.x = x;
         this.y = y;
         this.vX = vX;
@@ -29,11 +30,6 @@ public class Bullet {
         checkCollision();
     }
 
-    public void checkCollision() {
-        if(id == 1) {
-            // TODO
-        }
-    }
 
     public void paint(Graphics g) {
         if(id == 1) {
@@ -46,8 +42,39 @@ public class Bullet {
         g.fillRoundRect(x, y, BULLET_WIDTH, BULLET_HEIGHT, 10, 10);
     }
 
+    public void checkCollision() {
+        for(Entity e : handler.getEntities()) {
+
+            if(e instanceof Bullet) {
+
+                if(((Bullet) e).getID() != id) {
+
+                    if(((Bullet) e).getBounds().intersects(getBounds())) {
+                        handler.remove(e);
+                        handler.remove(this);
+                    }
+                }
+            }
+
+            if(e instanceof PlayerBall) {
+
+                if(id == 2 && ((PlayerBall) e).getBounds().intersects(getBounds())) {
+                    ((PlayerBall) e).setHealth(((PlayerBall) e).getHealth() - 5);
+                }
+            }
+        }
+
+        if(x < 0 - BULLET_WIDTH || x > Game.WIDTH || y < 0 - BULLET_HEIGHT || y > Game.HEIGHT) {
+            handler.remove(this);
+        }
+    }
+
     public Rectangle getBounds() {
         return new Rectangle(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+    }
+
+    public int getID() {
+        return id;
     }
 }
 
