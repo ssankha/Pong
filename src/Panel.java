@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLOutput;
 
-public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
+public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener, Runnable {
 
 
     public static String status; // controls what's on the screen
@@ -24,8 +24,10 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
     private Message goodLuck;
 
     // create real game objects
+    private Handler handler;
     private EnemyPaddle ep1;
     private EnemyPaddle ep2;
+    private PlayerBall playerBall;
     private boolean switchGame = false; // used to switch the status from "PONG" to "GAME"
     private boolean locationSet = false; // used at first to let the thread know if it needs to update the enemyPaddles' locations
     private boolean startGame = false;
@@ -53,8 +55,12 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         instructions = new Message(this.game, Game.WIDTH / 2 - (406/2), "A player wins when their score reaches 6!", 300);
         goodLuck = new Message(this.game, Game.WIDTH / 2 - (106/2), "Good luck!", 200);
 
-        ep1 = new EnemyPaddle(this.game, hp.getX(), hp.getY(), 0, 3);
-        ep2 = new EnemyPaddle(this.game, ai.getX(), ai.getY(), 0, 3);
+        handler = new Handler(this.game);
+        ep1 = new EnemyPaddle(this.game, handler, hp.getX(), hp.getY(), 0, 3);
+        ep2 = new EnemyPaddle(this.game, handler, ai.getX(), ai.getY(), 0, 3);
+        handler.add(ep1);
+        handler.add(ep2);
+
 
         gameOverMessage = new Message(this.game, Game.WIDTH / 2 - (205/2), "The game has ended.", 300);
         ballMessage = new Message(this.game, Game.WIDTH / 2 - (207/2), "Now, you are the ball.", 300);
@@ -92,8 +98,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
                 locationSet = true;
             }
 
-            ep1.update();
-            ep2.update();
+            handler.update();
         }
     }
 
@@ -127,8 +132,7 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         }
         else if(status.equals("GAME")) {
             score.paint(g);
-            ep1.paint(g);
-            ep2.paint(g);
+            handler.paint(g);
 
             if(!gameOverMessage.getStopMessage()) {
                 gameOverMessage.paint(g);
@@ -147,6 +151,11 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
             }
 
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 
     @Override
@@ -206,4 +215,6 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) { }
+
+
 }
