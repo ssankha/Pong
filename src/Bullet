@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Iterator;
 
 public class Bullet implements Entity {
 
@@ -6,14 +7,14 @@ public class Bullet implements Entity {
     public static final int BULLET_HEIGHT = 10;
 
     private Game game;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private double vX;
     private double vY;
     private int id; // 1 = player, 2 = paddle
     private Handler handler;
 
-    public Bullet(Game game, Handler handler, int x, int y, double vX, double vY, int id) {
+    public Bullet(Game game, Handler handler, double x, double y, double vX, double vY, int id) {
         this.game = game;
         this.handler = handler;
         this.x = x;
@@ -39,10 +40,11 @@ public class Bullet implements Entity {
             g.setColor(Color.red);
         }
 
-        g.fillRoundRect(x, y, BULLET_WIDTH, BULLET_HEIGHT, 10, 10);
+        g.fillRoundRect((int) x, (int) y, BULLET_WIDTH, BULLET_HEIGHT, 10, 10);
     }
 
     public void checkCollision() {
+
         for(Entity e : handler.getEntities()) {
 
             if(e instanceof Bullet) {
@@ -50,8 +52,8 @@ public class Bullet implements Entity {
                 if(((Bullet) e).getID() != id) {
 
                     if(((Bullet) e).getBounds().intersects(getBounds())) {
-                        handler.remove(e);
-                        handler.remove(this);
+                        handler.addToRemove(e);
+                        handler.addToRemove(this);
                     }
                 }
             }
@@ -60,17 +62,19 @@ public class Bullet implements Entity {
 
                 if(id == 2 && ((PlayerBall) e).getBounds().intersects(getBounds())) {
                     ((PlayerBall) e).setHealth(((PlayerBall) e).getHealth() - 5);
+                    handler.addToRemove(this);
                 }
             }
         }
 
         if(x < 0 - BULLET_WIDTH || x > Game.WIDTH || y < 0 - BULLET_HEIGHT || y > Game.HEIGHT) {
-            handler.remove(this);
+            handler.addToRemove(this);
         }
+
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, BULLET_WIDTH, BULLET_HEIGHT);
+        return new Rectangle((int) x, (int) y, BULLET_WIDTH, BULLET_HEIGHT);
     }
 
     public int getID() {
