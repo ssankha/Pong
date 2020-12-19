@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLOutput;
 
-public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener, Runnable {
+public class Panel extends JPanel implements KeyListener, ActionListener, MouseListener, MouseMotionListener {
 
 
     public static String status; // controls what's on the screen
@@ -58,8 +57,8 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         handler = new Handler(this.game);
         ep1 = new EnemyPaddle(this.game, handler, hp.getX(), hp.getY(), 0, 3);
         ep2 = new EnemyPaddle(this.game, handler, ai.getX(), ai.getY(), 0, 3);
-        handler.add(ep1);
-        handler.add(ep2);
+        handler.addToEntities(ep1);
+        handler.addToEntities(ep2);
 
 
         gameOverMessage = new Message(this.game, Game.WIDTH / 2 - (205/2), "The game has ended.", 300);
@@ -153,10 +152,6 @@ public class Panel extends JPanel implements KeyListener, ActionListener, MouseL
         }
     }
 
-    @Override
-    public void run() {
-
-    }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
