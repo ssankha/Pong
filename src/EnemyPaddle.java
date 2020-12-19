@@ -56,11 +56,12 @@ public class EnemyPaddle implements Entity {
         g.setColor(Color.white);
         g.fillRoundRect(x, y, PADDLE_WIDTH, PADDLE_HEIGHT, 10, 10);
 
+
         shootTimer++;
 
-        if(shootTimer >= 200) {
+        if (shootTimer >= 500) {
             shoot();
-            shootTimer -= 200;
+            shootTimer -= 500;
         }
     }
 
@@ -89,13 +90,23 @@ public class EnemyPaddle implements Entity {
     }
 
     public void shoot() {
-        if(vX == 0) {
-            synchronized (new Object()) {
-                handler.add(new Bullet(game, handler, x, y + PADDLE_HEIGHT / 2, 8, 0, 2));
+
+        if (vX == 0) {
+
+            if (x < Game.WIDTH / 2) {
+                handler.addToAdd(new Bullet(game, handler, x + PADDLE_WIDTH, y + (PADDLE_HEIGHT / 4), 0.04, 0, 2));
+                handler.addToAdd(new Bullet(game, handler, x + PADDLE_WIDTH, y + (3 * PADDLE_HEIGHT / 4), 0.04, 0, 2));
+
+            } else if (x > Game.WIDTH / 2) {
+                handler.addToAdd(new Bullet(game, handler, x, y + (PADDLE_HEIGHT / 4), -0.04, 0, 2));
+                handler.addToAdd(new Bullet(game, handler, x, y + (3 * PADDLE_HEIGHT / 4), -0.04, 0, 2));
             }
-        }
-        else {
-            handler.add(new Bullet(game, handler, x + PADDLE_WIDTH / 2, y, 0, 8, 2));
+
+            System.out.println("entities: " + handler.getEntities().size());
+            System.out.println("added: " + handler.getToAdd().size());
+            System.out.println("removed: " + handler.getToRemove().size());
+
+
         }
     }
 }
